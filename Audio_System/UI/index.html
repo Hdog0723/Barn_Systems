@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+
+
+<html>
+    <head>
+        <title>Barn UI</title>
+
+        <link rel="stylesheet" href="style.Css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    </head>
+    <div class="Header" align="Center">
+            <h1>Systems</h1>
+    </div>
+    <body>
+        <div class="Main_container">
+            <div class="Weather_container">
+                <div id="time">12:20</div>
+                <div class="weather_mid">
+                    <div class="stats">
+                        <div><span class="label">Temp: </span><span id="temp">32</span><span class="unit" id="temp_unit">°F</span></div>
+                        <div><span class="label">Pressure: </span><span id="pressure">1.02</span><span class="unit" id="pressure_unit"> atm</span></div>
+                        <div><span class="label">Humidity: </span><span id="humidity">42</span><span class="unit">%</span></div>
+                    </div>
+                    <div class="wind_container">
+                        <div class="arrow" id="wind_arrow"></div>
+                        <div><span class="label">Wind: </span><span id="wind">8</span><span class="unit" id="wind_unit"> mph</span></div>
+                        <div><span class="label">Gust: </span><span id="wind">14</span><span class="unit" id="wind_gust"> mph</span></div>
+                    </div> 
+                </div>
+                <div class="weather_lower">
+                    <div id="map"></div>
+                    <div class="graph_container">
+                        <canvas id="temp_graph" class="graph"></canvas>
+                        <canvas id="pressure_graph" class="graph"></canvas>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="Action_container">
+
+                <div class="System_button" >
+                AirFlow
+                </div>
+
+                <div class="System_button">
+                Lights
+                </div>
+                <div class="System_button">
+                Music
+                </div>
+
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+    <footer>© 2025 Barn Control System</footer>
+</html>
