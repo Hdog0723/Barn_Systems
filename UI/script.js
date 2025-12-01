@@ -10,10 +10,12 @@ const arrow = document.getElementById("wind_arrow")
 
 arrow.style.transform= "rotate(0deg)"
 
-arrow.addEventListener('click', () =>{
-    
-    arrow.style.transform = "rotate(270deg)"
-})
+arrow.addEventListener("click", () => {
+    let current = arrow.dataset.angle ? parseInt(arrow.dataset.angle) : 0;
+    current = (current + 45) % 360;
+    arrow.dataset.angle = current;
+    arrow.style.transform = `rotate(${current}deg)`;
+});
 
 
 const center=[39.29019878808572, -84.27956108213318]
@@ -25,9 +27,9 @@ let map = L.map('map', {
 
 map.dragging.disable();
 
-map.on('moveend', function () {
-    map.setView(center, map.getZoom(), {animate: false});
-});
+// map.on('moveend', function () {
+//     map.setView(center, 17 ,{animate: true});
+// });
 
 // Base map layer
 L.tileLayer("https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", {
