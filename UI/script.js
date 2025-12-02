@@ -1,12 +1,9 @@
-const buttons = document.querySelectorAll('.System_button');
+const savedTheme = localStorage.getItem("theme");
 
-buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        alert(button.textContent);
-    });
-});
+
 
 const arrow = document.getElementById("wind_arrow")
+
 
 arrow.style.transform= "rotate(0deg)"
 
@@ -25,12 +22,6 @@ let map = L.map('map', {
     attributionControl: false
 }).setView(center, 17);
 
-
-
-// map.on('moveend', function () {
-//     map.setView(center, 17 ,{animate: true});
-// });
-
 // Base map layer
 let lightLayer = L.tileLayer(
     "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
@@ -42,35 +33,75 @@ let darkLayer = L.tileLayer(
     { maxZoom: 20 }
 );
 
-// RainViewer radar layer
-L.tileLayer(
-        "https://tilecache-us.rainviewer.com/v3/tiles/{z}/{x}/{y}/radar/0/0_0.png",
-    {
-        opacity: 0.8,
-        tileSize: 256,
-        maxZoom: 20,
-    }
-).addTo(map);
-
 const toggle_mode = document.getElementById("themeToggle");
+const setting_bnt = document.getElementById("settings")
+const homing_bnt = document.getElementById("homing")
+const weather_bnt = document.getElementById("weather")
+const audio_bnt = document.getElementById("audio")
+const light_bnt = document.getElementById("lighting")
+const air_bnt = document.getElementById("air_flow")
+
 
 toggle_mode.addEventListener("click", () => {
     document.body.classList.toggle("dark");
 
     // Change button text
     if (document.body.classList.contains("dark")) {
-        toggle.querySelector('img').src="Images/Sun.png";
+        toggle_mode.querySelector('img').src="../Assets/Sun.png";
+        setting_bnt.querySelector('img').src="../Assets/Settings-Dark.png";
+        homing_bnt.querySelector('img').src="../Assets/Homing-Dark.png";
+        weather_bnt.querySelector('img').src="../Assets/Weather-Dark.png";
+        localStorage.setItem("theme", "dark");
         map.removeLayer(lightLayer)
         map.addLayer(darkLayer)
     } else {
-        toggle.querySelector('img').src="Images/Moon.png";
+        toggle_mode.querySelector('img').src="../Assets/Moon.png";
+        setting_bnt.querySelector('img').src="../Assets/Settings-Light.png";
+        homing_bnt.querySelector('img').src="../Assets/Homing-Light.png";
+        weather_bnt.querySelector('img').src="../Assets/Weather-Light.png";
+        localStorage.setItem("theme", "light");
         map.removeLayer(darkLayer);
         map.addLayer(lightLayer);
     }
 });
 
-const homing = document.getElementById("homing")
+audio_bnt.addEventListener("click", () => {
+    window.location.href = "Audio/index.html";
+});
+weather_bnt.addEventListener("click", () => {
+    window.location.href = "Weather/index.html";
+});
+light_bnt.addEventListener("click", () => {
+    window.location.href = "Lights/index.html";
+});
+air_bnt.addEventListener("click", () => {
+    window.location.href = "Airflow/index.html";
+});
 
-homing.addEventListener("click", () => {
-    map.setView(center,17,{animate: true})
+homing_bnt.addEventListener("click", () => {
+    map.setView(center,17)
 })
+
+if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+} else {
+    document.body.classList.remove("dark");
+}
+
+if (document.body.classList.contains("dark")) {
+    toggle_mode.querySelector('img').src="../Assets/Sun.png";
+    setting_bnt.querySelector('img').src="../Assets/Settings-Dark.png";
+    homing_bnt.querySelector('img').src="../Assets/Homing-Dark.png";
+    weather_bnt.querySelector('img').src="../Assets/Weather-Dark.png";
+    localStorage.setItem("theme", "dark");
+    map.removeLayer(lightLayer)
+    map.addLayer(darkLayer)
+} else {
+    toggle_mode.querySelector('img').src="../Assets/Moon.png";
+    setting_bnt.querySelector('img').src="../Assets/Settings-Light.png";
+    homing_bnt.querySelector('img').src="../Assets/Homing-Light.png";
+    weather_bnt.querySelector('img').src="../Assets/Weather-Light.png";
+    localStorage.setItem("theme", "light");
+    map.removeLayer(darkLayer);
+    map.addLayer(lightLayer);
+}

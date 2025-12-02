@@ -7,13 +7,17 @@
         <title>Barn UI</title>
 
         <link rel="stylesheet" href="style.Css">
+        <link rel="stylesheet" href="Common/style.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     </head>
-    <div class="Header" align="Center">
+    
+
+    <body>
+        <div class="Header" align="Center">
             <h1>Systems</h1>
-    </div>
-    <body style=" vertical-align: middle;">
+        </div>
+        <div id="wrapper">
         <div class="Main_container">
             <div class="Weather_container">
                 <div id="time">12:20</div>
@@ -38,28 +42,28 @@
                     
                 </div>
                 <div class="control_bar">
-                <div id="themeToggle" class="button"><img src="Images/Moon.png" style="width: 40px; height:40px;vertical-align: middle;padding: 4px;"></div>
-                <div id="homing" class="button">🌙 Dark Mode</div>
-                <div id="themeToggle" class="button">🌙 Dark Mode</div>
-                <div id="settings" class="button">🌙 Dark Mode</div>
+                <div id="themeToggle" class="button"><img src="../Assets/Moon.png" style="width: 40px; height:40px;vertical-align: middle;padding: 4px;"></div>
+                <div id="homing" class="button"><img src="../Assets/Homing-Light.png" style="width: 40px; height:40px;vertical-align: middle;padding: 4px;"></div>
+                <div id="weather" class="button"><img src="../Assets/Weather-Light.png" style="width: 40px; height:40px;vertical-align: middle;padding: 4px;"></div>
+                <div id="settings" class="button"><img src="../Assets/Settings-Light.png" style="width: 40px; height:40px;vertical-align: middle;padding: 4px;"></div>
                 </div>
             </div>
             <div class="Action_container">
 
-                <div class="System_button" >
+                <div class="System_button" id="air_flow">
                 AirFlow
                 </div>
 
-                <div class="System_button" >
+                <div class="System_button" id="lighting">
                 Lights
                 </div>
-                <div class="System_button" >
+                <div class="System_button" id="audio" >
                 Music
                 </div>
 
             </div>
         </div>
-
+        </div>
         <script src="script.js"></script>
     </body>
     <footer>© 2025 Barn Control System</footer>

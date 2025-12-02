@@ -1,0 +1,37 @@
+:root {
+    --bg: #f9f9f9;
+    --card-bg: #dcdcdc;
+    --grahp-bg: #ededed;
+    --text: #000;
+    --border: #474747;
+    --hover: #a3a3a3;
+}
+
+.dark {
+    --bg: #1e1e1e;
+    --card-bg: #333;
+    --grahp-bg: #454554;
+    --text: #e0e0e0;
+    --border: #888;
+    --hover: #435a76;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    right:0;
+    padding: 5px 10px;
+    width: auto;
+    color:#c0c0c0;
+        
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+button {
+    aspect-ratio: 1/1;
+    top:0;
+    left:0;
+    width: 25%;
+}
