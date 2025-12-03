@@ -1,6 +1,3 @@
-const savedTheme = localStorage.getItem("theme");
-
-
 
 const arrow = document.getElementById("wind_arrow")
 
@@ -13,6 +10,8 @@ arrow.addEventListener("click", () => {
     arrow.dataset.angle = current;
     arrow.style.transform = `rotate(${current}deg)`;
 });
+
+
 
 
 const center=[39.29019878808572, -84.27956108213318]
@@ -32,6 +31,47 @@ let darkLayer = L.tileLayer(
     "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
     { maxZoom: 20 }
 );
+let lightLayer_full = L.tileLayer("https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", {
+    maxZoom: 20
+});
+
+let darkLayer_full = L.tileLayer("https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png", {
+    maxZoom: 20
+});
+let fullscreenMap = L.map('mapExpanded', {
+    zoomControl: false,
+    attributionControl: false
+}).setView(center, 17);
+
+// Use same tiles as your main one
+fullscreenMap.addLayer(lightLayer_full);
+
+
+document.getElementById("map").addEventListener("click", () => {
+    document.getElementById("mapOverlay").style.display = "flex";
+
+    // Create separate Leaflet instance for fullscreen map
+    setTimeout(() => {
+        fullscreenMap.invalidateSize();
+        fullscreenMap.setView(map.getCenter(), map.getZoom());
+    }, 100);
+});
+
+// Close overlay when clicking background
+document.getElementById("mapOverlay").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("mapOverlay")) {
+        document.getElementById("mapOverlay").style.display = "none";
+    }
+    map.setView(fullscreenMap.getCenter(), fullscreenMap.getZoom())
+});
+
+map.on("moveend", () => {
+    const pos = {
+        center: map.getCenter(),
+        zoom: map.getZoom()
+    };
+    sessionStorage.setItem("mapPos", JSON.stringify(pos));
+});
 
 const toggle_mode = document.getElementById("themeToggle");
 const setting_bnt = document.getElementById("settings")
@@ -42,27 +82,41 @@ const light_bnt = document.getElementById("lighting")
 const air_bnt = document.getElementById("air_flow")
 
 
+function applyThemeToIcons() {
+    if (document.body.classList.contains("dark")) {
+        toggle_mode.querySelector('img').src = "../Assets/Sun.png";
+        setting_bnt.querySelector('img').src = "../Assets/Settings-Dark.png";
+        homing_bnt.querySelector('img').src = "../Assets/Homing-Dark.png";
+        weather_bnt.querySelector('img').src = "../Assets/Weather-Dark.png";
+
+        map.removeLayer(lightLayer);
+        map.addLayer(darkLayer);
+        fullscreenMap.addLayer(darkLayer_full);
+        fullscreenMap.removeLayer(lightLayer_full);
+        
+    } else {
+        toggle_mode.querySelector('img').src = "../Assets/Moon.png";
+        setting_bnt.querySelector('img').src = "../Assets/Settings-Light.png";
+        homing_bnt.querySelector('img').src = "../Assets/Homing-Light.png";
+        weather_bnt.querySelector('img').src = "../Assets/Weather-Light.png";
+
+        map.removeLayer(darkLayer);
+        map.addLayer(lightLayer);
+        fullscreenMap.addLayer(lightLayer_full);
+        fullscreenMap.removeLayer(darkLayer_full);
+    }
+}
+
 toggle_mode.addEventListener("click", () => {
     document.body.classList.toggle("dark");
 
     // Change button text
     if (document.body.classList.contains("dark")) {
-        toggle_mode.querySelector('img').src="../Assets/Sun.png";
-        setting_bnt.querySelector('img').src="../Assets/Settings-Dark.png";
-        homing_bnt.querySelector('img').src="../Assets/Homing-Dark.png";
-        weather_bnt.querySelector('img').src="../Assets/Weather-Dark.png";
         localStorage.setItem("theme", "dark");
-        map.removeLayer(lightLayer)
-        map.addLayer(darkLayer)
     } else {
-        toggle_mode.querySelector('img').src="../Assets/Moon.png";
-        setting_bnt.querySelector('img').src="../Assets/Settings-Light.png";
-        homing_bnt.querySelector('img').src="../Assets/Homing-Light.png";
-        weather_bnt.querySelector('img').src="../Assets/Weather-Light.png";
         localStorage.setItem("theme", "light");
-        map.removeLayer(darkLayer);
-        map.addLayer(lightLayer);
     }
+    applyThemeToIcons()
 });
 
 audio_bnt.addEventListener("click", () => {
@@ -82,26 +136,14 @@ homing_bnt.addEventListener("click", () => {
     map.setView(center,17)
 })
 
-if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-} else {
-    document.body.classList.remove("dark");
-}
+document.addEventListener("DOMContentLoaded", () => {
+        const saved = sessionStorage.getItem("mapPos");
 
-if (document.body.classList.contains("dark")) {
-    toggle_mode.querySelector('img').src="../Assets/Sun.png";
-    setting_bnt.querySelector('img').src="../Assets/Settings-Dark.png";
-    homing_bnt.querySelector('img').src="../Assets/Homing-Dark.png";
-    weather_bnt.querySelector('img').src="../Assets/Weather-Dark.png";
-    localStorage.setItem("theme", "dark");
-    map.removeLayer(lightLayer)
-    map.addLayer(darkLayer)
-} else {
-    toggle_mode.querySelector('img').src="../Assets/Moon.png";
-    setting_bnt.querySelector('img').src="../Assets/Settings-Light.png";
-    homing_bnt.querySelector('img').src="../Assets/Homing-Light.png";
-    weather_bnt.querySelector('img').src="../Assets/Weather-Light.png";
-    localStorage.setItem("theme", "light");
-    map.removeLayer(darkLayer);
-    map.addLayer(lightLayer);
-}
+    if (saved) {
+        const pos = JSON.parse(saved);
+        map.setView([pos.center.lat, pos.center.lng], pos.zoom);
+    } else {
+        map.setView(center, 17); // your default
+    }
+    applyThemeToIcons();
+});

@@ -30,7 +30,7 @@
     }
     #wrapper {
     margin: 0;
-    height: 100vh;
+    height: 75vh;
     display: flex;
     justify-content: center;   /* horizontal center */
     align-items: center;       /* vertical center */
@@ -59,6 +59,30 @@
     border-bottom: 24px solid #9b9b9b;
 
 }
+/* Hidden fullscreen overlay */
+#mapOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Fullscreen big map container */
+#mapExpanded {
+    width: 80vw;
+    height: 80vh;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+}
+
+
 .arrow::after {
     content: "";
     position: relative;
